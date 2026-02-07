@@ -43,7 +43,7 @@ const theme = createTheme({
   },
 });
 
-// 2. 카드 컴포넌트 (보내주신 코드의 MenuCard 역할)
+// 2. 카드 컴포넌트 (보내주신 코드의 MenuCard 역할)ss
 const FeatureCard = ({ title, icon: Icon, description }) => {
   return (
     <Card 
