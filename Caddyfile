@@ -1,0 +1,14 @@
+devsign.co.kr {
+
+    encode gzip
+
+    # 백엔드API
+    handle /api/* {
+        reverse_proxy devsign-backend:8080
+    }
+
+    # 프론트엔드 (React)
+    handle {
+        reverse_proxy devsign-frontend:3000
+    }
+}
