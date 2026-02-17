@@ -17,13 +17,14 @@ import {
   ShieldCheck, 
   Upload, 
   Users, 
-  ShoppingBag, 
   ScanSearch, 
   Receipt 
 } from "lucide-react";
 
-// 별도 파일로 분리한 Analyze 컴포넌트 불러오기
+// 별도 파일로 분리한 컴포넌트들 불러오기
 import Analyze from "./Analyze";
+import Login from "./Login"; // 새로 만들 로그인 컴포넌트
+import Signup from "./Signup"; //회원가입 부분
 
 const theme = createTheme({
   typography: {
@@ -86,28 +87,42 @@ const FeatureCard = ({ title, icon: Icon, description }) => {
   );
 };
 
+// 공통 헤더 컴포넌트 (로그인 버튼 포함)
+const Header = () => {
+  return (
+    <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'white/80', backdropFilter: 'blur(10px)', position: 'sticky', top: 0, zIndex: 100 }}>
+      <Container maxWidth="lg" sx={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
+        <Stack direction="row" alignItems="center" spacing={1} component={Link} to="/" sx={{ textDecoration: 'none', color: 'black' }}>
+          <Box sx={{ bgcolor: 'black', color: 'white', p: 0.5, borderRadius: 1, display: 'flex' }}>
+            <ShieldCheck size={20} />
+          </Box>
+          <Typography variant="h6" fontWeight="bold">Unvail</Typography>
+        </Stack>
+        
+        <Stack direction="row" spacing={3} alignItems="center">
+          <Link to="/analyze" style={{ textDecoration: 'none', color: '#4b5563', fontWeight: 500 }}>분석하기</Link>
+          <Link to="/community" style={{ textDecoration: 'none', color: '#4b5563', fontWeight: 500 }}>커뮤니티</Link>
+          <Link to="/shop" style={{ textDecoration: 'none', color: '#4b5563', fontWeight: 500 }}>착한기업 샵</Link>
+          {/* 로그인 버튼 추가 */}
+          <Button 
+            component={Link} 
+            to="/login" 
+            variant="text" 
+            sx={{ color: 'black', fontWeight: 700, textTransform: 'none' }}
+          >
+            로그인
+          </Button>
+        </Stack>
+      </Container>
+    </Box>
+  );
+};
+
 // 메인 화면 컴포넌트
 function Home() {
   return (
     <>
-      {/* 헤더 네비게이션 */}
-      <Box sx={{ borderBottom: 1, borderColor: 'divider', bgcolor: 'white/80', backdropFilter: 'blur(10px)', position: 'sticky', top: 0, zIndex: 100 }}>
-        <Container maxWidth="lg" sx={{ height: 64, display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
-          <Stack direction="row" alignItems="center" spacing={1} component={Link} to="/" sx={{ textDecoration: 'none', color: 'black' }}>
-            <Box sx={{ bgcolor: 'black', color: 'white', p: 0.5, borderRadius: 1, display: 'flex' }}>
-              <ShieldCheck size={20} />
-            </Box>
-            <Typography variant="h6" fontWeight="bold">Unvail</Typography>
-          </Stack>
-          
-          <Stack direction="row" spacing={3} sx={{ display: { xs: 'none', md: 'flex' } }}>
-            <Link to="/analyze" style={{ textDecoration: 'none', color: '#4b5563', fontWeight: 500 }}>분석하기</Link>
-            <Link to="/community" style={{ textDecoration: 'none', color: '#4b5563', fontWeight: 500 }}>커뮤니티</Link>
-            <Link to="/shop" style={{ textDecoration: 'none', color: '#4b5563', fontWeight: 500 }}>착한기업 샵</Link>
-          </Stack>
-        </Container>
-      </Box>
-
+      <Header />
       {/* Hero Section */}
       <Box
         sx={{
@@ -131,7 +146,7 @@ function Home() {
             AI가 제품 정보를 분석하여 <strong>A~F 등급</strong>으로 안전성을 평가합니다.<br />신뢰할 수 있는 제품 선택을 위한 첫걸음
           </Typography>
 
-          <Stack direction={{ xs: 'col', sm: 'row' }} spacing={2} justifyContent="center" sx={{ mb: 8 }}>
+          <Stack direction={{ xs: 'column', sm: 'row' }} spacing={2} justifyContent="center" sx={{ mb: 8 }}>
             <Button variant="contained" size="large" component={Link} to="/analyze" sx={{ bgcolor: 'black', px: 4, py: 1.5, borderRadius: 2, fontSize: '1rem', '&:hover': { bgcolor: '#333' } }} startIcon={<Upload size={20} />}>지금 분석하기</Button>
             <Button variant="outlined" size="large" component={Link} to="/community" sx={{ borderColor: 'grey.300', color: 'black', px: 4, py: 1.5, borderRadius: 2, fontSize: '1rem', '&:hover': { borderColor: 'black', bgcolor: 'transparent' } }} startIcon={<Users size={20} />}>커뮤니티 둘러보기</Button>
           </Stack>
@@ -157,10 +172,11 @@ function App() {
       <div className="App">
         <Routes>
           <Route path="/" element={<Home />} />
-          {/* 분석 페이지 경로에 분리한 Analyze 컴포넌트 연결 */}
           <Route path="/analyze" element={<Analyze />} /> 
-          <Route path="/community" element={<div>커뮤니티 페이지</div>} />
-          <Route path="/shop" element={<div>착한기업 샵 페이지</div>} />
+          <Route path="/login" element={<Login />} /> {/* 로그인 컴포넌트 연결 */}
+          <Route path="/community" element={<div><Header />커뮤니티 페이지</div>} />
+          <Route path="/shop" element={<div><Header />착한기업 샵 페이지</div>} />
+          <Route path="/signup" element={<Signup />} /> {/* 가입 경로 추가! */}
         </Routes>
       </div>
     </ThemeProvider>
